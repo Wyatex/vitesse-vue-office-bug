@@ -4,9 +4,9 @@
   "packageManager": "pnpm@9.8.0",
   "scripts": {
     "build": "vite-ssg build",
-    "dev": "vite --port 3333 --open",
+    "dev": "vite --open",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite preview --port 4174",
     "preview-https": "serve dist",
     "test": "vitest",
     "test:e2e": "cypress open",
@@ -19,6 +19,9 @@
   "dependencies": {
     "@unhead/vue": "^1.10.0",
     "@unocss/reset": "^0.62.2",
+    "@vue-office/docx": "^1.6.2",
+    "@vue-office/excel": "^1.7.11",
+    "@vue-office/pdf": "^2.0.9",
     "@vueuse/core": "^11.0.1",
     "@vueuse/head": "^2.0.0",
     "nprogress": "^0.2.0",

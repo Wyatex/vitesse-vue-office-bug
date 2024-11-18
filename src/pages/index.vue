@@ -12,6 +12,20 @@ function go() {
 }
 
 const { t } = useI18n()
+
+const fileName = ref('')
+const src = ref()
+const { open, onChange } = useFileDialog()
+onChange((files) => {
+  if (files?.length) {
+    fileName.value = files[0].name
+    const fileReader = new FileReader()
+    fileReader.readAsArrayBuffer(files[0])
+    fileReader.onload = () => {
+      src.value = fileReader.result
+    }
+  }
+})
 </script>
 
 <template>
@@ -47,6 +61,31 @@ const { t } = useI18n()
         {{ t('button.go') }}
       </button>
     </div>
+
+    <button
+      m-3 text-sm btn
+      @click="open"
+    >
+      上传文件
+    </button>
+
+    <div>没有transition</div>
+    <vue-office-pdf
+      v-if="fileName.endsWith('.pdf')"
+      :src="src"
+    />
+    <vue-office-docx v-else-if="fileName.endsWith('.docx')" :src="src" />
+    <vue-office-excel v-else-if="fileName.endsWith('.xlsx')" :src="src" />
+
+    <div>有transition，build后preview渲染不正确</div>
+    <transition>
+      <vue-office-pdf
+        v-if="fileName.endsWith('.pdf')"
+        :src="src"
+      />
+      <vue-office-docx v-else-if="fileName.endsWith('.docx')" :src="src" />
+      <vue-office-excel v-else-if="fileName.endsWith('.xlsx')" :src="src" />
+    </transition>
   </div>
 </template>
 
