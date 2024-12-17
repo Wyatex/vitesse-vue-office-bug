@@ -1,67 +1,50 @@
 <script setup lang="ts">
+import { getJsPreviewDocx, getJsPreviewExcel, getJsPreviewPdf } from '~/modules/vue-office'
+import '@js-preview/docx/lib/index.css'
+import '@js-preview/excel/lib/index.css'
+
 defineOptions({
   name: 'IndexPage',
 })
-const user = useUserStore()
-const name = ref(user.savedName)
 
-const router = useRouter()
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
-
-const { t } = useI18n()
+const div1 = ref<HTMLElement>()
+const div2 = ref<HTMLElement>()
 
 const fileName = ref('')
-const src = ref()
 const { open, onChange } = useFileDialog()
 onChange((files) => {
   if (files?.length) {
+    // eslint-disable-next-line ts/no-unused-expressions
+    div1.value && (div1.value.innerHTML = '')
+    // eslint-disable-next-line ts/no-unused-expressions
+    div2.value && (div2.value.innerHTML = '')
     fileName.value = files[0].name
-    const fileReader = new FileReader()
-    fileReader.readAsArrayBuffer(files[0])
-    fileReader.onload = () => {
-      src.value = fileReader.result
-    }
+    nextTick(() => {
+      if (fileName.value.endsWith('.docx')) {
+        const myDocxPreviewer1 = getJsPreviewDocx().init(div1.value!)
+        const myDocxPreviewer2 = getJsPreviewDocx().init(div2.value!)
+        myDocxPreviewer1.preview(files[0])
+        myDocxPreviewer2.preview(files[0])
+      }
+      else if (fileName.value.endsWith('.pdf')) {
+        const myPdfPreviewer1 = getJsPreviewPdf().init(div1.value!)
+        const myPdfPreviewer2 = getJsPreviewPdf().init(div2.value!)
+        myPdfPreviewer1.preview(files[0])
+        myPdfPreviewer2.preview(files[0])
+      }
+      else {
+        const myExcelPreviewer1 = getJsPreviewExcel().init(div1.value!)
+        const myExcelPreviewer2 = getJsPreviewExcel().init(div2.value!)
+        myExcelPreviewer1.preview(files[0])
+        myExcelPreviewer2.preview(files[0])
+      }
+    })
   }
 })
 </script>
 
 <template>
   <div>
-    <div text-4xl>
-      <div i-carbon-campsite inline-block />
-    </div>
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank">
-        Vitesse
-      </a>
-    </p>
-    <p>
-      <em text-sm opacity-75>{{ t('intro.desc') }}</em>
-    </p>
-
-    <div py-4 />
-
-    <TheInput
-      v-model="name"
-      :placeholder="t('intro.whats-your-name')"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-    <label class="hidden" for="input">{{ t('intro.whats-your-name') }}</label>
-
-    <div>
-      <button
-        m-3 text-sm btn
-        :disabled="!name"
-        @click="go"
-      >
-        {{ t('button.go') }}
-      </button>
-    </div>
-
     <button
       m-3 text-sm btn
       @click="open"
@@ -70,21 +53,11 @@ onChange((files) => {
     </button>
 
     <div>没有transition</div>
-    <vue-office-pdf
-      v-if="fileName.endsWith('.pdf')"
-      :src="src"
-    />
-    <vue-office-docx v-else-if="fileName.endsWith('.docx')" :src="src" />
-    <vue-office-excel v-else-if="fileName.endsWith('.xlsx')" :src="src" />
+    <div v-if="fileName" ref="div1" class="h-30vh w-50vw" />
 
-    <div>有transition，build后preview渲染不正确</div>
+    <div>有transition</div>
     <transition>
-      <vue-office-pdf
-        v-if="fileName.endsWith('.pdf')"
-        :src="src"
-      />
-      <vue-office-docx v-else-if="fileName.endsWith('.docx')" :src="src" />
-      <vue-office-excel v-else-if="fileName.endsWith('.xlsx')" :src="src" />
+      <div v-if="fileName" ref="div2" class="h-30vh w-50vw" />
     </transition>
   </div>
 </template>
@@ -93,3 +66,15 @@ onChange((files) => {
 meta:
   layout: home
 </route>
+
+<style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>

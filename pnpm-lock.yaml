@@ -11,6 +11,15 @@ importers:
 
   .:
     dependencies:
+      '@js-preview/docx':
+        specifier: ^1.6.2
+        version: 1.6.2
+      '@js-preview/excel':
+        specifier: ^1.7.12
+        version: 1.7.12
+      '@js-preview/pdf':
+        specifier: ^2.0.8
+        version: 2.0.8
       '@unhead/vue':
         specifier: ^1.10.0
         version: 1.10.0(vue@3.4.38(typescript@5.5.4))
@@ -1136,6 +1145,15 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@js-preview/docx@1.6.2':
+    resolution: {integrity: sha512-DNzUr8l4KwbK10+kCc9wWn5syfDduaMoLnIwcHRo94N0XffJfhiYkfjmY/gvGWj4OmD/gB281bANnHyVMyfA5Q==}
+
+  '@js-preview/excel@1.7.12':
+    resolution: {integrity: sha512-sO2B+SEeBz12NydiOzC9ZiwxyVSQbnFHIO0g7u+AHX4VziGVMT2krAL+oRzoyfgG4jChp0I18nlkpZtbEP/y6Q==}
+
+  '@js-preview/pdf@2.0.8':
+    resolution: {integrity: sha512-x0mb59u2KQ8InBtiwBN0+FaiYyzlW39y5/WYuVpvEI8YEZPDxJBQwstPaN18yHx2ywZCaH38uOy7zapkAaChmg==}
 
   '@jsdevtools/ez-spawn@3.0.4':
     resolution: {integrity: sha512-f5DRIOZf7wxogefH03RjMPMdBF7ADTWUMoOs9kaJo06EfwF+aFhMZMDZxHg/Xe12hptN9xoZjGso2fdjapBRIA==}
@@ -6621,6 +6639,12 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@js-preview/docx@1.6.2': {}
+
+  '@js-preview/excel@1.7.12': {}
+
+  '@js-preview/pdf@2.0.8': {}
 
   '@jsdevtools/ez-spawn@3.0.4':
     dependencies:
